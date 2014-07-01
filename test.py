@@ -25,7 +25,7 @@ class TestISC(unittest.TestCase):
                       body='{"status":"green"}', status=200,
                       match_querystring=True, content_type='text/json')
         self.assertEquals(type(isc._get('infocon', isc.JSON)), unicode)
-        self.assertEquals(isc._get('infocon', isc.JSON), u'{"status":"green"}')
+        self.assertEquals(isc._get('infocon', isc.JSON), '{"status":"green"}')
 
     @responses.activate
     def test_converts_ordered_dict_to_list(self):
