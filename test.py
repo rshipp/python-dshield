@@ -17,7 +17,7 @@ class TestISC(unittest.TestCase):
                       body='{"status":"green"}', status=200,
                       match_querystring=True, content_type='text/json')
         self.assertEquals(type(isc._get('infocon')), dict)
-        self.assertEquals(isc._get('infocon'), {u'status': u'green'})
+        self.assertEquals(isc._get('infocon'), {'status': 'green'})
 
     @responses.activate
     def test_gets_string_if_type(self):
@@ -50,4 +50,4 @@ class TestISC(unittest.TestCase):
             self.assertEquals(json['{index}'.format(index=index)], item)
         self.assertEquals(len(json), 11)
         self.assertEquals(len(isc._get('backscatter')), 10)
-        self.assertNotIn('METAKEYINFO', isc._get('backscatter'))
+        self.assertFalse('METAKEYINFO' in isc._get('backscatter'))
