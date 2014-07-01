@@ -3,6 +3,12 @@ import responses
 import isc
 from isc import requests
 
+# Python 2/3 compat fix.
+try:
+    _ = unicode
+except NameError:
+    unicode = str
+
 class TestISC(unittest.TestCase):
 
     @responses.activate
@@ -41,7 +47,7 @@ class TestISC(unittest.TestCase):
         self.assertEquals(type(isc._get('backscatter')), list)
         json = requests.get('https://isc.sans.edu/api/backscatter?json').json()
         for index, item in enumerate(isc._get('backscatter')):
-            self.assertEquals(json['{}'.format(index)], item)
+            self.assertEquals(json['{index}'.format(index=index)], item)
         self.assertEquals(len(json), 11)
         self.assertEquals(len(isc._get('backscatter')), 10)
         self.assertNotIn('METAKEYINFO', isc._get('backscatter'))
