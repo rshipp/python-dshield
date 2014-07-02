@@ -14,6 +14,17 @@ class Error(Exception):
     """Base class for custom exceptions."""
 
 
+def _strip_and_reformat(data):
+    """Strip out 'METAKEYINFO', and reformat a dict into a list if it has keys
+    like "0", "1", etc. Does not modify the `data` parameter.
+    """
+    data_copy = data.copy()
+    try:
+        data_copy.__delitem__('METAKEYINFO')
+        return [data_copy[k] for k in sorted(data_copy, key=int)]
+    except (KeyError, ValueError):
+        return data_copy
+
 def _get(function, output=None):
     """Get and return data from the API.
 
@@ -21,11 +32,4 @@ def _get(function, output=None):
     """
     if output:
         return requests.get(''.join([__BASE_URL, function, output])).text
-    data = requests.get(''.join([__BASE_URL, function, JSON])).json()
-    # Strip out 'METAKEYINFO', and reformat a dict into a list if it has keys
-    # like "0", "1", etc.
-    try:
-        data.__delitem__('METAKEYINFO')
-        return [data[k] for k in sorted(data, key=int)]
-    except (KeyError, ValueError):
-        return data
+    return _strip_and_reformat(requests.get(''.join([__BASE_URL, function, JSON])).json())
