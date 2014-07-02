@@ -1,6 +1,5 @@
 """A Pythonic interface to the ISC/DShield API."""
 
-import datetime
 import requests
 
 XML = "?xml"
