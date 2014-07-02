@@ -59,5 +59,4 @@ def handler(return_format=None):
 
 def infocon(return_format=None):
     """Returns the current infocon level (green, yellow, orange, red)."""
-    uri = 'infocon'
     return _get('infocon', return_format)
