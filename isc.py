@@ -52,3 +52,8 @@ def backscatter(date=None, rows=None):
     if rows:
         uri = '/'.join([uri, str(rows)])
     return _get(uri)
+
+def handler():
+    """Returns the name of the handler of the day."""
+    uri = 'handler'
+    return _get(uri)

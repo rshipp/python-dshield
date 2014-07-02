@@ -96,3 +96,11 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(isc.backscatter(datetime.date(2011, 12, 1)), ["2011-12-01"])
         self.assertEquals(isc.backscatter("2011-12-01", 10), ["10"])
         self.assertEquals(isc.backscatter("2011-12-01", "10"), ["10"])
+
+    @responses.activate
+    def test_handler(self):
+        responses.add(responses.GET, 'https://isc.sans.edu/api/handler?json',
+                      body='{"name": "test"}', status=200,
+                      match_querystring=True, content_type='text/json')
+        self.assertEquals(isc.handler(), {'name': 'test'})
+        self.assertEquals(isc.handler()['name'], 'test')
