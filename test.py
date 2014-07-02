@@ -1,8 +1,8 @@
 import datetime
 import unittest
 import responses
+import requests
 import isc
-from isc import requests
 
 # Python 2/3 compat fix.
 try:
