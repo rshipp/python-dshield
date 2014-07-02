@@ -55,10 +55,9 @@ def backscatter(date=None, rows=None, return_format=None):
 
 def handler(return_format=None):
     """Returns the name of the handler of the day."""
-    uri = 'handler'
-    return _get(uri, return_format)
+    return _get('handler', return_format)
 
 def infocon(return_format=None):
     """Returns the current infocon level (green, yellow, orange, red)."""
     uri = 'infocon'
-    return _get(uri, return_format)
+    return _get('infocon', return_format)
