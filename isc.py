@@ -26,13 +26,13 @@ def _strip_and_reformat(data):
     except (KeyError, ValueError):
         return data_copy
 
-def _get(function, output=None):
+def _get(function, output_format=None):
     """Get and return data from the API.
 
     :returns: A str, list, or dict, depending on the input values and API data.
     """
-    if output:
-        return requests.get(''.join([__BASE_URL, function, output])).text
+    if output_format:
+        return requests.get(''.join([__BASE_URL, function, output_format])).text
     return _strip_and_reformat(requests.get(''.join([__BASE_URL, function, JSON])).json())
 
 
