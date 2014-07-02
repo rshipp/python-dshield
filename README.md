@@ -11,3 +11,15 @@ A Python module to get data from the ISC/DShield [API][api].
 [travis]: https://travis-ci.org/rshipp/python-isc
 [coveralls]: https://coveralls.io/r/rshipp/python-isc
 [landscape]: https://landscape.io/github/rshipp/python-isc/master
+
+## Usage
+
+Sphinx docs will be generated later. For now:
+
+```python
+import isc
+isc.infocon()
+# {'status': 'green'}
+isc.infocon(isc.XML)
+# '<?xml version="1.0" encoding="UTF-8"?>\n<infocon>\n<status>green</status>\n</infocon>'
+```
