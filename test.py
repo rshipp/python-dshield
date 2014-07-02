@@ -1,3 +1,4 @@
+import datetime
 import unittest
 import responses
 import isc
@@ -9,7 +10,8 @@ try:
 except NameError:
     unicode = str
 
-class TestISC(unittest.TestCase):
+
+class TestInternals(unittest.TestCase):
 
     @responses.activate
     def test_gets_dict_if_not_type(self):
@@ -72,3 +74,25 @@ class TestISC(unittest.TestCase):
         self.assertEquals(len(data), 11)
         self.assertEquals(len(isc._strip_and_reformat(data)), 10)
         self.assertFalse('METAKEYINFO' in isc._strip_and_reformat(data))
+
+
+class TestPublicMethods(unittest.TestCase):
+
+    @responses.activate
+    def test_backscatter(self):
+        responses.add(responses.GET, 'https://isc.sans.edu/api/backscatter?json',
+                      body='{"METAKEYINFO": "", "0": "test"}', status=200,
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET,
+                      'https://isc.sans.edu/api/backscatter/2011-12-01?json',
+                      body='{"METAKEYINFO": "", "0": "2011-12-01"}', status=200, match_querystring=True,
+                      content_type='text/json')
+        responses.add(responses.GET,
+                      'https://isc.sans.edu/api/backscatter/2011-12-01/10?json',
+                      body='{"METAKEYINFO": "", "0": "10"}', status=200, match_querystring=True,
+                      content_type='text/json')
+        self.assertEquals(isc.backscatter(), ["test"])
+        self.assertEquals(isc.backscatter("2011-12-01"), ["2011-12-01"])
+        self.assertEquals(isc.backscatter(datetime.date(2011, 12, 1)), ["2011-12-01"])
+        self.assertEquals(isc.backscatter("2011-12-01", 10), ["10"])
+        self.assertEquals(isc.backscatter("2011-12-01", "10"), ["10"])
