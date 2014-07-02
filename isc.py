@@ -25,17 +25,17 @@ def _strip_and_reformat(data):
     except (KeyError, ValueError):
         return data_copy
 
-def _get(function, output_format=None):
+def _get(function, return_format=None):
     """Get and return data from the API.
 
     :returns: A str, list, or dict, depending on the input values and API data.
     """
-    if output_format:
-        return requests.get(''.join([__BASE_URL, function, output_format])).text
+    if return_format:
+        return requests.get(''.join([__BASE_URL, function, return_format])).text
     return _strip_and_reformat(requests.get(''.join([__BASE_URL, function, JSON])).json())
 
 
-def backscatter(date=None, rows=None):
+def backscatter(date=None, rows=None, return_format=None):
     """Returns possible backscatter data.
 
     This report only includes "syn ack" data and is summarized by source port.
@@ -51,9 +51,9 @@ def backscatter(date=None, rows=None):
             uri = '/'.join([uri, date])
     if rows:
         uri = '/'.join([uri, str(rows)])
-    return _get(uri)
+    return _get(uri, return_format)
 
-def handler():
+def handler(return_format=None):
     """Returns the name of the handler of the day."""
     uri = 'handler'
-    return _get(uri)
+    return _get(uri, return_format)

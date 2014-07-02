@@ -96,6 +96,8 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(isc.backscatter(datetime.date(2011, 12, 1)), ["2011-12-01"])
         self.assertEquals(isc.backscatter("2011-12-01", 10), ["10"])
         self.assertEquals(isc.backscatter("2011-12-01", "10"), ["10"])
+        self.assertEquals(isc.backscatter("2011-12-01", "10", isc.JSON),
+                          '{"METAKEYINFO": "", "0": "10"}')
 
     @responses.activate
     def test_handler(self):
@@ -104,3 +106,4 @@ class TestPublicMethods(unittest.TestCase):
                       match_querystring=True, content_type='text/json')
         self.assertEquals(isc.handler(), {'name': 'test'})
         self.assertEquals(isc.handler()['name'], 'test')
+        self.assertEquals(isc.handler(isc.JSON), '{"name": "test"}')
