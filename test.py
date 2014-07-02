@@ -107,3 +107,12 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(isc.handler(), {'name': 'test'})
         self.assertEquals(isc.handler()['name'], 'test')
         self.assertEquals(isc.handler(isc.JSON), '{"name": "test"}')
+
+    @responses.activate
+    def test_infocon(self):
+        responses.add(responses.GET, 'https://isc.sans.edu/api/infocon?json',
+                      body='{"status": "test"}', status=200,
+                      match_querystring=True, content_type='text/json')
+        self.assertEquals(isc.infocon(), {'status': 'test'})
+        self.assertEquals(isc.infocon()['status'], 'test')
+        self.assertEquals(isc.infocon(isc.JSON), '{"status": "test"}')

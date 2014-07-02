@@ -57,3 +57,8 @@ def handler(return_format=None):
     """Returns the name of the handler of the day."""
     uri = 'handler'
     return _get(uri, return_format)
+
+def infocon(return_format=None):
+    """Returns the current infocon level (green, yellow, orange, red)."""
+    uri = 'infocon'
+    return _get(uri, return_format)
