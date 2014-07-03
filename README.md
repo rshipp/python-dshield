@@ -7,7 +7,7 @@ DShield
 
 A Python module to get data from the ISC/DShield [API][api].
 
-[api]: https://dshield.sans.edu/api/
+[api]: https://dshield.org/api/
 [travis]: https://travis-ci.org/rshipp/python-dshield
 [coveralls]: https://coveralls.io/r/rshipp/python-dshield
 [landscape]: https://landscape.io/github/rshipp/python-dshield/master
