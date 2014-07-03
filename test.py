@@ -116,3 +116,15 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(isc.infocon(), {'status': 'test'})
         self.assertEquals(isc.infocon()['status'], 'test')
         self.assertEquals(isc.infocon(isc.JSON), '{"status": "test"}')
+
+    @responses.activate
+    def test_ip(self):
+        responses.add(responses.GET, 'https://isc.sans.edu/api/ip/4.4.4.4?json',
+                      body='{"ip":{"test":"unknown"}}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://isc.sans.edu/api/ip/badip?json',
+                      body='{"error":"bad IP address"}', status=200,
+                      match_querystring=True, content_type='text/json')
+        self.assertEquals(isc.ip('4.4.4.4'), {'ip': {'test': 'unknown'}})
+        self.assertEquals(isc.ip('4.4.4.4', isc.JSON), '{"ip":{"test":"unknown"}}')
+        self.assertRaises(isc.Error, isc.ip, 'badip')

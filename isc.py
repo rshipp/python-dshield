@@ -60,3 +60,21 @@ def handler(return_format=None):
 def infocon(return_format=None):
     """Returns the current infocon level (green, yellow, orange, red)."""
     return _get('infocon', return_format)
+
+def ip(ip_address, return_format=None):
+    """Returns a summary of the information our database holds for a
+    particular IP address (similar to /ipinfo.html).
+
+    In the returned data:
+    Count - (also reports or records) total number of packets blocked from
+    this IP.
+    Attacks - (also targets) number of unique destination IP addresses for
+    these packets.
+
+    :ip_address: a valid IP address
+    """
+    response = _get('ip/{address}'.format(address=ip_address), return_format)
+    if 'bad IP address' in str(response):
+        raise Error('Bad IP address, {ip_address}'.format(ip_address=ip_address))
+    else:
+        return response
