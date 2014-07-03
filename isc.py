@@ -78,3 +78,19 @@ def ip(ip_address, return_format=None):
         raise Error('Bad IP address, {ip_address}'.format(ip_address=ip_address))
     else:
         return response
+
+def port(port_number, return_format=None):
+    """Summary information about a particular port.
+
+    In the returned data:
+    Records - Total number of records for a given date.
+    Targets - Number of unique destination IP addresses.
+    Sources - Number of unique originating IPs.
+
+    :port_number: a string or integer port number
+    """
+    response = _get('port/{number}'.format(number=port_number), return_format)
+    if 'bad port number' in str(response):
+        raise Error('Bad port number, {number}'.format(number=port_number))
+    else:
+        return response

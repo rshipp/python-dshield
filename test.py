@@ -128,3 +128,16 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(isc.ip('4.4.4.4'), {'ip': {'test': 'unknown'}})
         self.assertEquals(isc.ip('4.4.4.4', isc.JSON), '{"ip":{"test":"unknown"}}')
         self.assertRaises(isc.Error, isc.ip, 'badip')
+
+    @responses.activate
+    def test_port(self):
+        responses.add(responses.GET, 'https://isc.sans.edu/api/port/80?json',
+                      body='{"port":80}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://isc.sans.edu/api/port/badport?json',
+                      body='{"error":"bad port number"}', status=200,
+                      match_querystring=True, content_type='text/json')
+        self.assertEquals(isc.port('80'), {'port': 80})
+        self.assertEquals(isc.port(80), {'port': 80})
+        self.assertEquals(isc.port('80', isc.JSON), '{"port":80}')
+        self.assertRaises(isc.Error, isc.port, 'badport')
