@@ -114,3 +114,22 @@ def portdate(port_number, date=None, return_format=None):
         raise Error('Bad port number, {number}'.format(number=port_number))
     else:
         return response
+
+def topports(sort_by=None, limit=None, date=None, return_format=None):
+    """
+
+    :sort_by: one of 'records', 'targets', 'sources'
+    :limit: number of records to be returned
+    :date: an optional string in 'Y-M-D' format or datetime.date() object
+    """
+    uri = 'topports'
+    if sort_by:
+        uri = '/'.join([uri, sort_by])
+    if limit:
+        uri = '/'.join([uri, str(limit)])
+    if date:
+        try:
+            uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
+        except AttributeError:
+            uri = '/'.join([uri, date])
+    return _get(uri, return_format)

@@ -159,3 +159,27 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(dshield.portdate('80', '2011-07-03'), {'portdate': 'test'})
         self.assertEquals(dshield.portdate('80', return_format=dshield.JSON), '{"portdate":"test"}')
         self.assertRaises(dshield.Error, dshield.portdate, 'badport')
+
+    @responses.activate
+    def test_topports(self):
+        responses.add(responses.GET, 'https://dshield.org/api/topports/records/10/2011-07-23?json',
+                      body='{"topports":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/topports/records/10?json',
+                      body='{"topports":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/topports/records?json',
+                      body='{"topports":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/topports?json',
+                      body='{"topports":"test"}',
+                      match_querystring=True, content_type='text/json')
+
+        data = {'topports': 'test'}
+        self.assertEquals(dshield.topports(), data)
+        self.assertEquals(dshield.topports('records'), data)
+        self.assertEquals(dshield.topports('records', 10), data)
+        self.assertEquals(dshield.topports('records', '10', datetime.date(2011, 7, 23)), data)
+        self.assertEquals(dshield.topports('records', 10, '2011-07-23'), data)
+
+        self.assertEquals(dshield.topports('records', return_format=dshield.JSON), '{"topports":"test"}')
