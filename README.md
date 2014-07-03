@@ -14,7 +14,8 @@ A Python module to get data from the ISC/DShield [API][api].
 
 ## Usage
 
-Sphinx docs will be generated later. For now:
+The Sphinx docs will be cleaned up and added to RTD later. In the meantime,
+here's a quick usage example to get you started:
 
 ```python
 import dshield
