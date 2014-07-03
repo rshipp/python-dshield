@@ -141,3 +141,21 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(dshield.port(80), {'port': 80})
         self.assertEquals(dshield.port('80', dshield.JSON), '{"port":80}')
         self.assertRaises(dshield.Error, dshield.port, 'badport')
+
+    @responses.activate
+    def test_portdate(self):
+        responses.add(responses.GET, 'https://dshield.org/api/portdate/80/2011-07-03?json',
+                      body='{"portdate":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/portdate/80?json',
+                      body='{"portdate":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/portdate/badport?json',
+                      body='{"error":"bad port number"}', status=200,
+                      match_querystring=True, content_type='text/json')
+        self.assertEquals(dshield.portdate('80'), {'portdate': 'test'})
+        self.assertEquals(dshield.portdate(80), {'portdate': 'test'})
+        self.assertEquals(dshield.portdate('80', datetime.date(2011, 7, 3)), {'portdate': 'test'})
+        self.assertEquals(dshield.portdate('80', '2011-07-03'), {'portdate': 'test'})
+        self.assertEquals(dshield.portdate('80', return_format=dshield.JSON), '{"portdate":"test"}')
+        self.assertRaises(dshield.Error, dshield.portdate, 'badport')

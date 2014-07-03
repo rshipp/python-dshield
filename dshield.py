@@ -94,3 +94,23 @@ def port(port_number, return_format=None):
         raise Error('Bad port number, {number}'.format(number=port_number))
     else:
         return response
+
+def portdate(port_number, date=None, return_format=None):
+    """Information about a particular port at a particular date.
+
+    If the date is ommited, today's date is used.
+
+    :port_number: a string or integer port number
+    :date: an optional string or datetime.date() object
+    """
+    uri = 'portdate/{number}'.format(number=port_number)
+    if date:
+        try:
+            uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
+        except AttributeError:
+            uri = '/'.join([uri, date])
+    response = _get(uri, return_format)
+    if 'bad port number' in str(response):
+        raise Error('Bad port number, {number}'.format(number=port_number))
+    else:
+        return response
