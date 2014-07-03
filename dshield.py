@@ -7,7 +7,7 @@ JSON = "?json"
 TEXT = "?text"
 PHP = "?php"
 
-__BASE_URL = "https://isc.sans.edu/api/"
+__BASE_URL = "https://dshield.org/api/"
 
 
 class Error(Exception):

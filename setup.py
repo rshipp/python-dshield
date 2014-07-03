@@ -7,9 +7,9 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='isc',
+    name='dshield',
     version='0.1',
-    modules=['isc'],
+    modules=['dshield'],
     include_package_data=True,
     install_requires=[
         'requests'
@@ -17,7 +17,7 @@ setup(
     license='BSD',
     description='A Python interface to the ISC/DShield API.',
     long_description=README,
-    url='https://github.com/rshipp/python-isc/',
+    url='https://github.com/rshipp/python-dshield/',
     author='Ryan Shipp',
     author_email='python@rshipp.com',
     classifiers=[

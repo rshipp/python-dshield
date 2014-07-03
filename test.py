@@ -2,7 +2,7 @@ import datetime
 import unittest
 import responses
 import requests
-import isc
+import dshield
 
 # Python 2/3 compat fix.
 try:
@@ -15,23 +15,23 @@ class TestInternals(unittest.TestCase):
 
     @responses.activate
     def test_gets_dict_if_not_type(self):
-        responses.add(responses.GET, 'https://isc.sans.edu/api/infocon?json',
+        responses.add(responses.GET, 'https://dshield.org/api/infocon?json',
                       body='{"status":"green"}', status=200,
                       match_querystring=True, content_type='text/json')
-        self.assertEquals(type(isc._get('infocon')), dict)
-        self.assertEquals(isc._get('infocon'), {'status': 'green'})
+        self.assertEquals(type(dshield._get('infocon')), dict)
+        self.assertEquals(dshield._get('infocon'), {'status': 'green'})
 
     @responses.activate
     def test_gets_string_if_type(self):
-        responses.add(responses.GET, 'https://isc.sans.edu/api/infocon?json',
+        responses.add(responses.GET, 'https://dshield.org/api/infocon?json',
                       body='{"status":"green"}', status=200,
                       match_querystring=True, content_type='text/json')
-        self.assertEquals(type(isc._get('infocon', isc.JSON)), unicode)
-        self.assertEquals(isc._get('infocon', isc.JSON), '{"status":"green"}')
+        self.assertEquals(type(dshield._get('infocon', dshield.JSON)), unicode)
+        self.assertEquals(dshield._get('infocon', dshield.JSON), '{"status":"green"}')
 
     @responses.activate
     def test_get_converts_ordered_dict_to_list(self):
-        responses.add(responses.GET, 'https://isc.sans.edu/api/backscatter?json',
+        responses.add(responses.GET, 'https://dshield.org/api/backscatter?json',
                       status=200, match_querystring=True, content_type='text/json',
                       body="""
                       {"0":{"sourceport":"6000","count":"563542","sources":"518","targets":"94654"},
@@ -46,13 +46,13 @@ class TestInternals(unittest.TestCase):
                        "9":{"sourceport":"5070","count":"54773","sources":"23","targets":"54745"},
                        "METAKEYINFO":"sourceport"}
                       """)
-        self.assertEquals(type(isc._get('backscatter')), list)
-        json = requests.get('https://isc.sans.edu/api/backscatter?json').json()
-        for index, item in enumerate(isc._get('backscatter')):
+        self.assertEquals(type(dshield._get('backscatter')), list)
+        json = requests.get('https://dshield.org/api/backscatter?json').json()
+        for index, item in enumerate(dshield._get('backscatter')):
             self.assertEquals(json['{index}'.format(index=index)], item)
         self.assertEquals(len(json), 11)
-        self.assertEquals(len(isc._get('backscatter')), 10)
-        self.assertFalse('METAKEYINFO' in isc._get('backscatter'))
+        self.assertEquals(len(dshield._get('backscatter')), 10)
+        self.assertFalse('METAKEYINFO' in dshield._get('backscatter'))
 
     def test_strip_and_reformat_converts_ordered_dict_to_list(self):
         data = {
@@ -68,76 +68,76 @@ class TestInternals(unittest.TestCase):
             "9": {"sourceport":"5070","count":"54773","sources":"23","targets":"54745"},
             "METAKEYINFO": "sourceport"
         }
-        self.assertEquals(type(isc._strip_and_reformat(data)), list)
-        for index, item in enumerate(isc._strip_and_reformat(data)):
+        self.assertEquals(type(dshield._strip_and_reformat(data)), list)
+        for index, item in enumerate(dshield._strip_and_reformat(data)):
             self.assertEquals(data['{index}'.format(index=index)], item)
         self.assertEquals(len(data), 11)
-        self.assertEquals(len(isc._strip_and_reformat(data)), 10)
-        self.assertFalse('METAKEYINFO' in isc._strip_and_reformat(data))
+        self.assertEquals(len(dshield._strip_and_reformat(data)), 10)
+        self.assertFalse('METAKEYINFO' in dshield._strip_and_reformat(data))
 
 
 class TestPublicMethods(unittest.TestCase):
 
     @responses.activate
     def test_backscatter(self):
-        responses.add(responses.GET, 'https://isc.sans.edu/api/backscatter?json',
+        responses.add(responses.GET, 'https://dshield.org/api/backscatter?json',
                       body='{"METAKEYINFO": "", "0": "test"}', status=200,
                       match_querystring=True, content_type='text/json')
         responses.add(responses.GET,
-                      'https://isc.sans.edu/api/backscatter/2011-12-01?json',
+                      'https://dshield.org/api/backscatter/2011-12-01?json',
                       body='{"METAKEYINFO": "", "0": "2011-12-01"}', status=200, match_querystring=True,
                       content_type='text/json')
         responses.add(responses.GET,
-                      'https://isc.sans.edu/api/backscatter/2011-12-01/10?json',
+                      'https://dshield.org/api/backscatter/2011-12-01/10?json',
                       body='{"METAKEYINFO": "", "0": "10"}', status=200, match_querystring=True,
                       content_type='text/json')
-        self.assertEquals(isc.backscatter(), ["test"])
-        self.assertEquals(isc.backscatter("2011-12-01"), ["2011-12-01"])
-        self.assertEquals(isc.backscatter(datetime.date(2011, 12, 1)), ["2011-12-01"])
-        self.assertEquals(isc.backscatter("2011-12-01", 10), ["10"])
-        self.assertEquals(isc.backscatter("2011-12-01", "10"), ["10"])
-        self.assertEquals(isc.backscatter("2011-12-01", "10", isc.JSON),
+        self.assertEquals(dshield.backscatter(), ["test"])
+        self.assertEquals(dshield.backscatter("2011-12-01"), ["2011-12-01"])
+        self.assertEquals(dshield.backscatter(datetime.date(2011, 12, 1)), ["2011-12-01"])
+        self.assertEquals(dshield.backscatter("2011-12-01", 10), ["10"])
+        self.assertEquals(dshield.backscatter("2011-12-01", "10"), ["10"])
+        self.assertEquals(dshield.backscatter("2011-12-01", "10", dshield.JSON),
                           '{"METAKEYINFO": "", "0": "10"}')
 
     @responses.activate
     def test_handler(self):
-        responses.add(responses.GET, 'https://isc.sans.edu/api/handler?json',
+        responses.add(responses.GET, 'https://dshield.org/api/handler?json',
                       body='{"name": "test"}', status=200,
                       match_querystring=True, content_type='text/json')
-        self.assertEquals(isc.handler(), {'name': 'test'})
-        self.assertEquals(isc.handler()['name'], 'test')
-        self.assertEquals(isc.handler(isc.JSON), '{"name": "test"}')
+        self.assertEquals(dshield.handler(), {'name': 'test'})
+        self.assertEquals(dshield.handler()['name'], 'test')
+        self.assertEquals(dshield.handler(dshield.JSON), '{"name": "test"}')
 
     @responses.activate
     def test_infocon(self):
-        responses.add(responses.GET, 'https://isc.sans.edu/api/infocon?json',
+        responses.add(responses.GET, 'https://dshield.org/api/infocon?json',
                       body='{"status": "test"}', status=200,
                       match_querystring=True, content_type='text/json')
-        self.assertEquals(isc.infocon(), {'status': 'test'})
-        self.assertEquals(isc.infocon()['status'], 'test')
-        self.assertEquals(isc.infocon(isc.JSON), '{"status": "test"}')
+        self.assertEquals(dshield.infocon(), {'status': 'test'})
+        self.assertEquals(dshield.infocon()['status'], 'test')
+        self.assertEquals(dshield.infocon(dshield.JSON), '{"status": "test"}')
 
     @responses.activate
     def test_ip(self):
-        responses.add(responses.GET, 'https://isc.sans.edu/api/ip/4.4.4.4?json',
+        responses.add(responses.GET, 'https://dshield.org/api/ip/4.4.4.4?json',
                       body='{"ip":{"test":"unknown"}}',
                       match_querystring=True, content_type='text/json')
-        responses.add(responses.GET, 'https://isc.sans.edu/api/ip/badip?json',
+        responses.add(responses.GET, 'https://dshield.org/api/ip/badip?json',
                       body='{"error":"bad IP address"}', status=200,
                       match_querystring=True, content_type='text/json')
-        self.assertEquals(isc.ip('4.4.4.4'), {'ip': {'test': 'unknown'}})
-        self.assertEquals(isc.ip('4.4.4.4', isc.JSON), '{"ip":{"test":"unknown"}}')
-        self.assertRaises(isc.Error, isc.ip, 'badip')
+        self.assertEquals(dshield.ip('4.4.4.4'), {'ip': {'test': 'unknown'}})
+        self.assertEquals(dshield.ip('4.4.4.4', dshield.JSON), '{"ip":{"test":"unknown"}}')
+        self.assertRaises(dshield.Error, dshield.ip, 'badip')
 
     @responses.activate
     def test_port(self):
-        responses.add(responses.GET, 'https://isc.sans.edu/api/port/80?json',
+        responses.add(responses.GET, 'https://dshield.org/api/port/80?json',
                       body='{"port":80}',
                       match_querystring=True, content_type='text/json')
-        responses.add(responses.GET, 'https://isc.sans.edu/api/port/badport?json',
+        responses.add(responses.GET, 'https://dshield.org/api/port/badport?json',
                       body='{"error":"bad port number"}', status=200,
                       match_querystring=True, content_type='text/json')
-        self.assertEquals(isc.port('80'), {'port': 80})
-        self.assertEquals(isc.port(80), {'port': 80})
-        self.assertEquals(isc.port('80', isc.JSON), '{"port":80}')
-        self.assertRaises(isc.Error, isc.port, 'badport')
+        self.assertEquals(dshield.port('80'), {'port': 80})
+        self.assertEquals(dshield.port(80), {'port': 80})
+        self.assertEquals(dshield.port('80', dshield.JSON), '{"port":80}')
+        self.assertRaises(dshield.Error, dshield.port, 'badport')
