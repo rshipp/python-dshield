@@ -75,7 +75,7 @@ def ip(ip_address, return_format=None):
     """
     response = _get('ip/{address}'.format(address=ip_address), return_format)
     if 'bad IP address' in str(response):
-        raise Error('Bad IP address, {ip_address}'.format(ip_address=ip_address))
+        raise Error('Bad IP address, {address}'.format(address=ip_address))
     else:
         return response
 
