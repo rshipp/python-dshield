@@ -101,7 +101,7 @@ def portdate(port_number, date=None, return_format=None):
     If the date is ommited, today's date is used.
 
     :port_number: a string or integer port number
-    :date: an optional string or datetime.date() object
+    :date: an optional string in 'Y-M-D' format or datetime.date() object
     """
     uri = 'portdate/{number}'.format(number=port_number)
     if date:
