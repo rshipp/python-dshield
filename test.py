@@ -181,5 +181,27 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(dshield.topports('records', 10), data)
         self.assertEquals(dshield.topports('records', '10', datetime.date(2011, 7, 23)), data)
         self.assertEquals(dshield.topports('records', 10, '2011-07-23'), data)
-
         self.assertEquals(dshield.topports('records', return_format=dshield.JSON), '{"topports":"test"}')
+
+    @responses.activate
+    def test_topips(self):
+        responses.add(responses.GET, 'https://dshield.org/api/topips/records/10/2011-07-23?json',
+                      body='{"topips":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/topips/records/10?json',
+                      body='{"topips":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/topips/records?json',
+                      body='{"topips":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/topips?json',
+                      body='{"topips":"test"}',
+                      match_querystring=True, content_type='text/json')
+
+        data = {'topips': 'test'}
+        self.assertEquals(dshield.topips(), data)
+        self.assertEquals(dshield.topips('records'), data)
+        self.assertEquals(dshield.topips('records', 10), data)
+        self.assertEquals(dshield.topips('records', '10', datetime.date(2011, 7, 23)), data)
+        self.assertEquals(dshield.topips('records', 10, '2011-07-23'), data)
+        self.assertEquals(dshield.topips('records', return_format=dshield.JSON), '{"topips":"test"}')

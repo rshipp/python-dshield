@@ -133,3 +133,22 @@ def topports(sort_by=None, limit=None, date=None, return_format=None):
         except AttributeError:
             uri = '/'.join([uri, date])
     return _get(uri, return_format)
+
+def topips(sort_by=None, limit=None, date=None, return_format=None):
+    """Information about top ports for a particular date with return limit.
+
+    :sort_by: one of 'records', 'attacks'
+    :limit: number of records to be returned
+    :date: an optional string in 'Y-M-D' format or datetime.date() object
+    """
+    uri = 'topips'
+    if sort_by:
+        uri = '/'.join([uri, sort_by])
+    if limit:
+        uri = '/'.join([uri, str(limit)])
+    if date:
+        try:
+            uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
+        except AttributeError:
+            uri = '/'.join([uri, date])
+    return _get(uri, return_format)
