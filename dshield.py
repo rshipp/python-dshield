@@ -40,8 +40,9 @@ def backscatter(date=None, rows=None, return_format=None):
 
     This report only includes "syn ack" data and is summarized by source port.
 
-    :date: optional string (in Y-M-D format) or datetime.date() object
-    :rows: optional number of rows returned (default 1000)
+    :param date: optional string (in Y-M-D format) or datetime.date() object
+    :param rows: optional number of rows returned (default 1000)
+    :returns: list -- backscatter data.
     """
     uri = 'backscatter'
     if date:
@@ -66,12 +67,13 @@ def ip(ip_address, return_format=None):
     particular IP address (similar to /ipinfo.html).
 
     In the returned data:
-    Count - (also reports or records) total number of packets blocked from
+
+    Count: (also reports or records) total number of packets blocked from
     this IP.
-    Attacks - (also targets) number of unique destination IP addresses for
+    Attacks: (also targets) number of unique destination IP addresses for
     these packets.
 
-    :ip_address: a valid IP address
+    :param ip_address: a valid IP address
     """
     response = _get('ip/{address}'.format(address=ip_address), return_format)
     if 'bad IP address' in str(response):
@@ -83,11 +85,12 @@ def port(port_number, return_format=None):
     """Summary information about a particular port.
 
     In the returned data:
-    Records - Total number of records for a given date.
-    Targets - Number of unique destination IP addresses.
-    Sources - Number of unique originating IPs.
 
-    :port_number: a string or integer port number
+    Records: Total number of records for a given date.
+    Targets: Number of unique destination IP addresses.
+    Sources: Number of unique originating IPs.
+
+    :param port_number: a string or integer port number
     """
     response = _get('port/{number}'.format(number=port_number), return_format)
     if 'bad port number' in str(response):
@@ -100,8 +103,8 @@ def portdate(port_number, date=None, return_format=None):
 
     If the date is ommited, today's date is used.
 
-    :port_number: a string or integer port number
-    :date: an optional string in 'Y-M-D' format or datetime.date() object
+    :param port_number: a string or integer port number
+    :param date: an optional string in 'Y-M-D' format or datetime.date() object
     """
     uri = 'portdate/{number}'.format(number=port_number)
     if date:
@@ -118,9 +121,9 @@ def portdate(port_number, date=None, return_format=None):
 def topports(sort_by=None, limit=None, date=None, return_format=None):
     """Information about top ports for a particular date with return limit.
 
-    :sort_by: one of 'records', 'targets', 'sources'
-    :limit: number of records to be returned
-    :date: an optional string in 'Y-M-D' format or datetime.date() object
+    :param sort_by: one of 'records', 'targets', 'sources'
+    :param limit: number of records to be returned
+    :param date: an optional string in 'Y-M-D' format or datetime.date() object
     """
     uri = 'topports'
     if sort_by:
@@ -137,9 +140,9 @@ def topports(sort_by=None, limit=None, date=None, return_format=None):
 def topips(sort_by=None, limit=None, date=None, return_format=None):
     """Information about top ports for a particular date with return limit.
 
-    :sort_by: one of 'records', 'attacks'
-    :limit: number of records to be returned
-    :date: an optional string in 'Y-M-D' format or datetime.date() object
+    :param sort_by: one of 'records', 'attacks'
+    :param limit: number of records to be returned
+    :param date: an optional string in 'Y-M-D' format or datetime.date() object
     """
     uri = 'topips'
     if sort_by:
