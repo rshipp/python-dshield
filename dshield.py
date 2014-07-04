@@ -116,7 +116,7 @@ def portdate(port_number, date=None, return_format=None):
         return response
 
 def topports(sort_by=None, limit=None, date=None, return_format=None):
-    """
+    """Information about top ports for a particular date with return limit.
 
     :sort_by: one of 'records', 'targets', 'sources'
     :limit: number of records to be returned
