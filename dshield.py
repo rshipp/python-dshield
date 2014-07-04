@@ -1,4 +1,4 @@
-"""A Pythonic interface to the ISC/DShield API."""
+"""A Pythonic interface to the Internet Storm Center / DShield API."""
 
 import requests
 

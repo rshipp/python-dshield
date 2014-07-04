@@ -5,7 +5,7 @@ DShield
 [![Coverage Status](https://coveralls.io/repos/rshipp/python-dshield/badge.png)][coveralls]
 [![Code Health](https://landscape.io/github/rshipp/python-dshield/master/landscape.png)][landscape]
 
-A Python module to get data from the ISC/DShield [API][api].
+A Pythonic interface to the Internet Storm Center / DShield [API][api].
 
 ## Usage
 
