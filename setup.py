@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 setup(
     name='dshield',
     version='0.1',
-    modules=['dshield'],
+    py_modules=['dshield'],
     include_package_data=True,
     install_requires=[
         'requests'
