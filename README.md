@@ -7,15 +7,10 @@ DShield
 
 A Python module to get data from the ISC/DShield [API][api].
 
-[api]: https://dshield.org/api/
-[travis]: https://travis-ci.org/rshipp/python-dshield
-[coveralls]: https://coveralls.io/r/rshipp/python-dshield
-[landscape]: https://landscape.io/github/rshipp/python-dshield/master
-
 ## Usage
 
-The Sphinx docs will be cleaned up and added to RTD later. In the meantime,
-here's a quick usage example to get you started:
+For the full documentation, see the [ReadTheDocs][docs] site. If you just
+want a quick start:
 
 ```python
 import dshield
@@ -24,3 +19,9 @@ dshield.infocon()
 dshield.infocon(dshield.XML)
 # '<?xml version="1.0" encoding="UTF-8"?>\n<infocon>\n<status>green</status>\n</infocon>'
 ```
+
+[api]: https://dshield.org/api/
+[travis]: https://travis-ci.org/rshipp/python-dshield
+[coveralls]: https://coveralls.io/r/rshipp/python-dshield
+[landscape]: https://landscape.io/github/rshipp/python-dshield/master
+[docs]: http://dshield.readthedocs.org/en/latest/
