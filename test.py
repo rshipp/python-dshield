@@ -174,7 +174,6 @@ class TestPublicMethods(unittest.TestCase):
         responses.add(responses.GET, 'https://dshield.org/api/topports?json',
                       body='{"topports":"test"}',
                       match_querystring=True, content_type='text/json')
-
         data = {'topports': 'test'}
         self.assertEquals(dshield.topports(), data)
         self.assertEquals(dshield.topports('records'), data)
@@ -197,7 +196,6 @@ class TestPublicMethods(unittest.TestCase):
         responses.add(responses.GET, 'https://dshield.org/api/topips?json',
                       body='{"topips":"test"}',
                       match_querystring=True, content_type='text/json')
-
         data = {'topips': 'test'}
         self.assertEquals(dshield.topips(), data)
         self.assertEquals(dshield.topips('records'), data)
