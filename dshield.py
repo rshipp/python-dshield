@@ -216,3 +216,29 @@ def asnum(number, limit=None, return_format=None):
     if limit:
         uri = '/'.join([uri, str(limit)])
     return _get(uri, return_format)
+
+def dailysummary(start_date=None, end_date=None, return_format=None):
+    """Returns daily summary totals of targets, attacks and sources. Limit to
+    30 days at a time. (Query 2002-01-01 to present)
+
+    In the return data:
+
+    Sources: Distinct source IP addresses the packets originate from.
+    Targets: Distinct target IP addresses the packets were sent to.
+    Reports: Number of packets reported.
+
+    :param start_date: string or datetime.date(), default is today
+    :param end_date: string or datetime.date(), default is today
+    """
+    uri = 'dailysummary'
+    if start_date:
+        try:
+            uri = '/'.join([uri, start_date.strftime("%Y-%m-%d")])
+        except AttributeError:
+            uri = '/'.join([uri, start_date])
+        if end_date:
+            try:
+                uri = '/'.join([uri, end_date.strftime("%Y-%m-%d")])
+            except AttributeError:
+                uri = '/'.join([uri, end_date])
+    return _get(uri, return_format)

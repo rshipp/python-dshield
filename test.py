@@ -269,3 +269,24 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(dshield.asnum(10, 4837), data)
         self.assertEquals(dshield.asnum(10, '4837'), data)
         self.assertEquals(dshield.asnum(10, return_format=dshield.JSON), '{"asnum":"test"}')
+
+    @responses.activate
+    def test_dailysummary(self):
+        responses.add(responses.GET,
+                      'https://dshield.org/api/dailysummary/2012-05-01/2012-05-03?json',
+                      body='{"dailysummary":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET,
+                      'https://dshield.org/api/dailysummary/2012-05-01?json',
+                      body='{"dailysummary":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/dailysummary?json',
+                      body='{"dailysummary":"test"}',
+                      match_querystring=True, content_type='text/json')
+        data = {'dailysummary': 'test'}
+        self.assertEquals(dshield.dailysummary(), data)
+        self.assertEquals(dshield.dailysummary('2012-05-01'), data)
+        self.assertEquals(dshield.dailysummary(datetime.date(2012, 5, 1)), data)
+        self.assertEquals(dshield.dailysummary('2012-05-01', '2012-05-03'), data)
+        self.assertEquals(dshield.dailysummary('2012-05-01', datetime.date(2012, 5, 3)), data)
+        self.assertEquals(dshield.dailysummary(return_format=dshield.JSON), '{"dailysummary":"test"}')
