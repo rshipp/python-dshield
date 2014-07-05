@@ -47,6 +47,7 @@ from the official API documentation_.
 .. autofunction:: dshield.topports
 .. autofunction:: dshield.topips
 .. autofunction:: dshield.sources
+.. autofunction:: dshield.porthistory
 
 
 Exceptions
