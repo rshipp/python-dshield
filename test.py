@@ -225,3 +225,31 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(dshield.sources('ip', '10', datetime.date(2012, 3, 8)), data)
         self.assertEquals(dshield.sources('ip', 10, '2012-03-08'), data)
         self.assertEquals(dshield.sources('ip', return_format=dshield.JSON), '{"sources":"test"}')
+
+    @responses.activate
+    def test_porthistory(self):
+        responses.add(responses.GET,
+                      'https://dshield.org/api/porthistory/80/2011-07-20/2011-07-23?json',
+                      body='{"porthistory":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET,
+                      'https://dshield.org/api/porthistory/80/2011-07-20?json',
+                      body='{"porthistory":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/porthistory/80?json',
+                      body='{"porthistory":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/porthistory?json',
+                      body='{"porthistory":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/porthistory/badport?json',
+                      body='{"porthistory":{"error":"bad port number"}}',
+                      match_querystring=True, content_type='text/json')
+        data = {'porthistory': 'test'}
+        self.assertEquals(dshield.porthistory(80), data)
+        self.assertEquals(dshield.porthistory('80'), data)
+        self.assertEquals(dshield.porthistory(80, datetime.date(2011, 7, 20)), data)
+        self.assertEquals(dshield.porthistory(80, '2011-07-20', datetime.date(2011, 7, 23)), data)
+        self.assertEquals(dshield.porthistory(80, '2011-07-20', '2011-07-23'), data)
+        self.assertEquals(dshield.porthistory(80, return_format=dshield.JSON), '{"porthistory":"test"}')
+        self.assertRaises(dshield.Error, dshield.porthistory, 'badport')

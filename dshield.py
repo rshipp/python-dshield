@@ -175,3 +175,33 @@ def sources(sort_by=None, limit=None, date=None, return_format=None):
         except AttributeError:
             uri = '/'.join([uri, date])
     return _get(uri, return_format)
+
+def porthistory(port_number, start_date=None, end_date=None, return_format=None):
+    """Returns port data for a range of dates.
+
+    In the return data:
+
+    Records: Total number of records for a given date range.
+    Targets: Number of unique destination IP addresses.
+    Sources: Number of unique originating IPs.
+
+    :param port_number: a valid port number (required)
+    :param start_date: string or datetime.date(), default is 30 days ago
+    :param end_date: string or datetime.date(), default is today
+    """
+    uri = 'porthistory/{port}'.format(port=port_number)
+    if start_date:
+        try:
+            uri = '/'.join([uri, start_date.strftime("%Y-%m-%d")])
+        except AttributeError:
+            uri = '/'.join([uri, start_date])
+    if end_date:
+        try:
+            uri = '/'.join([uri, end_date.strftime("%Y-%m-%d")])
+        except AttributeError:
+            uri = '/'.join([uri, end_date])
+    response = _get(uri, return_format)
+    if 'bad port number' in str(response):
+        raise Error('Bad port, {port}'.format(port=port_number))
+    else:
+        return response
