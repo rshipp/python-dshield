@@ -38,7 +38,6 @@ The docstrings for these functions are for the most part taken directly
 from the official API documentation_.
 
 .. autofunction:: dshield.backscatter
-
 .. autofunction:: dshield.handler
 .. autofunction:: dshield.infocon
 .. autofunction:: dshield.ip
@@ -48,6 +47,7 @@ from the official API documentation_.
 .. autofunction:: dshield.topips
 .. autofunction:: dshield.sources
 .. autofunction:: dshield.porthistory
+.. autofunction:: dshield.asnum
 
 
 Exceptions

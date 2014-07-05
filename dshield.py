@@ -205,3 +205,14 @@ def porthistory(port_number, start_date=None, end_date=None, return_format=None)
         raise Error('Bad port, {port}'.format(port=port_number))
     else:
         return response
+
+def asnum(number, limit=None, return_format=None):
+    """Returns a summary of the information our database holds for a
+    particular ASNUM (similar to /asdetailsascii.html) with return limit.
+
+    :param limit: number of records to be returned (max 2000)
+    """
+    uri = 'asnum/{number}'.format(number=number)
+    if limit:
+        uri = '/'.join([uri, str(limit)])
+    return _get(uri, return_format)

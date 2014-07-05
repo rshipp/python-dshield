@@ -253,3 +253,19 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(dshield.porthistory(80, '2011-07-20', '2011-07-23'), data)
         self.assertEquals(dshield.porthistory(80, return_format=dshield.JSON), '{"porthistory":"test"}')
         self.assertRaises(dshield.Error, dshield.porthistory, 'badport')
+
+    @responses.activate
+    def test_asnum(self):
+        responses.add(responses.GET,
+                      'https://dshield.org/api/asnum/10/4837?json',
+                      body='{"asnum":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/asnum/10?json',
+                      body='{"asnum":"test"}',
+                      match_querystring=True, content_type='text/json')
+        data = {'asnum': 'test'}
+        self.assertEquals(dshield.asnum(10), data)
+        self.assertEquals(dshield.asnum('10'), data)
+        self.assertEquals(dshield.asnum(10, 4837), data)
+        self.assertEquals(dshield.asnum(10, '4837'), data)
+        self.assertEquals(dshield.asnum(10, return_format=dshield.JSON), '{"asnum":"test"}')
