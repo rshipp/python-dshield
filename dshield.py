@@ -261,6 +261,7 @@ def daily404detail(date, limit=None, return_format=None):
     """Returns detail information of submitted 404 Error Page Information.
 
     :param date: string or datetime.date() (required)
+    :param limit: string or int, limit for number of returned items
     """
     uri = 'daily404detail'
     if date:
