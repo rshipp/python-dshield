@@ -50,8 +50,8 @@ def backscatter(date=None, rows=None, return_format=None):
             uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
         except AttributeError:
             uri = '/'.join([uri, date])
-    if rows:
-        uri = '/'.join([uri, str(rows)])
+        if rows:
+            uri = '/'.join([uri, str(rows)])
     return _get(uri, return_format)
 
 def handler(return_format=None):
@@ -128,13 +128,13 @@ def topports(sort_by=None, limit=None, date=None, return_format=None):
     uri = 'topports'
     if sort_by:
         uri = '/'.join([uri, sort_by])
-    if limit:
-        uri = '/'.join([uri, str(limit)])
-    if date:
-        try:
-            uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
-        except AttributeError:
-            uri = '/'.join([uri, date])
+        if limit:
+            uri = '/'.join([uri, str(limit)])
+            if date:
+                try:
+                    uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
+                except AttributeError:
+                    uri = '/'.join([uri, date])
     return _get(uri, return_format)
 
 def topips(sort_by=None, limit=None, date=None, return_format=None):
@@ -147,13 +147,13 @@ def topips(sort_by=None, limit=None, date=None, return_format=None):
     uri = 'topips'
     if sort_by:
         uri = '/'.join([uri, sort_by])
-    if limit:
-        uri = '/'.join([uri, str(limit)])
-    if date:
-        try:
-            uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
-        except AttributeError:
-            uri = '/'.join([uri, date])
+        if limit:
+            uri = '/'.join([uri, str(limit)])
+            if date:
+                try:
+                    uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
+                except AttributeError:
+                    uri = '/'.join([uri, date])
     return _get(uri, return_format)
 
 def sources(sort_by=None, limit=None, date=None, return_format=None):
@@ -167,13 +167,13 @@ def sources(sort_by=None, limit=None, date=None, return_format=None):
     uri = 'sources'
     if sort_by:
         uri = '/'.join([uri, sort_by])
-    if limit:
-        uri = '/'.join([uri, str(limit)])
-    if date:
-        try:
-            uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
-        except AttributeError:
-            uri = '/'.join([uri, date])
+        if limit:
+            uri = '/'.join([uri, str(limit)])
+            if date:
+                try:
+                    uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
+                except AttributeError:
+                    uri = '/'.join([uri, date])
     return _get(uri, return_format)
 
 def porthistory(port_number, start_date=None, end_date=None, return_format=None):
@@ -195,11 +195,11 @@ def porthistory(port_number, start_date=None, end_date=None, return_format=None)
             uri = '/'.join([uri, start_date.strftime("%Y-%m-%d")])
         except AttributeError:
             uri = '/'.join([uri, start_date])
-    if end_date:
-        try:
-            uri = '/'.join([uri, end_date.strftime("%Y-%m-%d")])
-        except AttributeError:
-            uri = '/'.join([uri, end_date])
+        if end_date:
+            try:
+                uri = '/'.join([uri, end_date.strftime("%Y-%m-%d")])
+            except AttributeError:
+                uri = '/'.join([uri, end_date])
     response = _get(uri, return_format)
     if 'bad port number' in str(response):
         raise Error('Bad port, {port}'.format(port=port_number))
