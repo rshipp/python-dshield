@@ -155,3 +155,23 @@ def topips(sort_by=None, limit=None, date=None, return_format=None):
         except AttributeError:
             uri = '/'.join([uri, date])
     return _get(uri, return_format)
+
+def sources(sort_by=None, limit=None, date=None, return_format=None):
+    """Information summary from the last 30 days about source IPs with return
+    limit.
+
+    :param sort_by: one of 'ip', 'count', 'attacks', 'firstseen', 'lastseen'
+    :param limit: number of records to be returned (max 10000)
+    :param date: an optional string in 'Y-M-D' format or datetime.date() object
+    """
+    uri = 'sources'
+    if sort_by:
+        uri = '/'.join([uri, sort_by])
+    if limit:
+        uri = '/'.join([uri, str(limit)])
+    if date:
+        try:
+            uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
+        except AttributeError:
+            uri = '/'.join([uri, date])
+    return _get(uri, return_format)
