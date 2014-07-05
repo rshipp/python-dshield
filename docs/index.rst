@@ -22,7 +22,7 @@ depending on the function. You can change this behavior by specifying the
 `dshield.TEXT`, and `dshield.PHP`. When any of these formats are used,
 the function will return a string containing the raw data from the API.
 
-To give a simple example:
+To give a simple example::
 
     >>> import dshield
     >>> dshield.infocon()
