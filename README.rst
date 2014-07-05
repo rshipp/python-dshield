@@ -25,5 +25,5 @@ want a quick start::
     dshield.infocon(dshield.XML)
     # '<?xml version="1.0" encoding="UTF-8"?>\n<infocon>\n<status>green</status>\n</infocon>'
 
-_API: https://dshield.org/api/
-_ReadTheDocs: http://dshield.readthedocs.org/en/latest/
+.. _API: https://dshield.org/api/
+.. _ReadTheDocs: http://dshield.readthedocs.org/en/latest/
