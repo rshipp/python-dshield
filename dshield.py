@@ -11,7 +11,7 @@ __BASE_URL = "https://dshield.org/api/"
 
 
 class Error(Exception):
-    """Base class for custom exceptions."""
+    """Custom exception class."""
 
 
 def _strip_and_reformat(data):
