@@ -320,3 +320,19 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(dshield.daily404detail('2012-02-23', '10'), data)
         self.assertEquals(dshield.daily404detail('2012-02-23', return_format=dshield.JSON),
                           '{"daily404detail":"test"}')
+
+    @responses.activate
+    def test_glossary(self):
+        responses.add(responses.GET,
+                      'https://dshield.org/api/glossary?json',
+                      body='{"glossary":"test"}',
+                      match_querystring=True, content_type='text/json')
+        responses.add(responses.GET,
+                      'https://dshield.org/api/glossary/test?json',
+                      body='{"glossary":"test"}',
+                      match_querystring=True, content_type='text/json')
+        data = {'glossary': 'test'}
+        self.assertEquals(dshield.glossary(), data)
+        self.assertEquals(dshield.glossary('test'), data)
+        self.assertEquals(dshield.glossary(return_format=dshield.JSON),
+                          '{"glossary":"test"}')

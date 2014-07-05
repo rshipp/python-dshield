@@ -51,6 +51,7 @@ from the official API documentation_.
 .. autofunction:: dshield.dailysummary
 .. autofunction:: dshield.daily404summary
 .. autofunction:: dshield.daily404detail
+.. autofunction:: dshield.glossary
 
 
 Exceptions
