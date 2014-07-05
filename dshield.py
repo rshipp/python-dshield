@@ -295,3 +295,18 @@ def webhoneypotsummary(date, return_format=None):
     except AttributeError:
         uri = '/'.join([uri, date])
     return _get(uri, return_format)
+
+def webhoneypotbytype(date, return_format=None):
+    """API data for `Webhoneypot: Attack By Type.
+    <https://isc.sans.edu/webhoneypot/types.html>`_. We currently use a set
+    of regular expressions to determine the type of attack used to attack the
+    honeypot. Output is the top 30 attacks for the last month.
+
+    :param date: string or datetime.date() (required)
+    """
+    uri = 'webhoneypotbytype'
+    try:
+        uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
+    except AttributeError:
+        uri = '/'.join([uri, date])
+    return _get(uri, return_format)

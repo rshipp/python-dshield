@@ -52,6 +52,7 @@ from the official API documentation_.
 .. autofunction:: dshield.daily404detail
 .. autofunction:: dshield.glossary
 .. autofunction:: dshield.webhoneypotsummary
+.. autofunction:: dshield.webhoneypotbytype
 
 
 Exceptions

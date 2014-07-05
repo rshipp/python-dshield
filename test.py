@@ -348,3 +348,15 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(dshield.webhoneypotsummary(datetime.date(2012, 12, 10)), data)
         self.assertEquals(dshield.webhoneypotsummary('2012-12-10', return_format=dshield.JSON),
                           '{"webhoneypotsummary":"test"}')
+
+    @responses.activate
+    def test_webhoneypotbytype(self):
+        responses.add(responses.GET,
+                      'https://dshield.org/api/webhoneypotbytype/2012-12-10?json',
+                      body='{"webhoneypotbytype":"test"}',
+                      match_querystring=True, content_type='text/json')
+        data = {'webhoneypotbytype': 'test'}
+        self.assertEquals(dshield.webhoneypotbytype('2012-12-10'), data)
+        self.assertEquals(dshield.webhoneypotbytype(datetime.date(2012, 12, 10)), data)
+        self.assertEquals(dshield.webhoneypotbytype('2012-12-10', return_format=dshield.JSON),
+                          '{"webhoneypotbytype":"test"}')
