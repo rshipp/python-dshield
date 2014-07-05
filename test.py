@@ -206,7 +206,7 @@ class TestPublicMethods(unittest.TestCase):
 
     @responses.activate
     def test_sources(self):
-        responses.add(responses.GET, 'https://dshield.org/api/sources/ip/10/2011-03-08?json',
+        responses.add(responses.GET, 'https://dshield.org/api/sources/ip/10/2012-03-08?json',
                       body='{"sources":"test"}',
                       match_querystring=True, content_type='text/json')
         responses.add(responses.GET, 'https://dshield.org/api/sources/ip/10?json',
@@ -222,6 +222,6 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(dshield.sources(), data)
         self.assertEquals(dshield.sources('ip'), data)
         self.assertEquals(dshield.sources('ip', 10), data)
-        self.assertEquals(dshield.sources('ip', '10', datetime.date(2011, 3, 8)), data)
-        self.assertEquals(dshield.sources('ip', 10, '2011-03-08'), data)
+        self.assertEquals(dshield.sources('ip', '10', datetime.date(2012, 3, 8)), data)
+        self.assertEquals(dshield.sources('ip', 10, '2012-03-08'), data)
         self.assertEquals(dshield.sources('ip', return_format=dshield.JSON), '{"sources":"test"}')
