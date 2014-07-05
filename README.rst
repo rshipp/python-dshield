@@ -17,7 +17,7 @@ Usage
 -----
 
 For the full documentation, see the ReadTheDocs_ site. If you just
-want a quick start:
+want a quick start::
 
     import dshield
     dshield.infocon()
