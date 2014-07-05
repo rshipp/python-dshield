@@ -50,6 +50,7 @@ from the official API documentation_.
 .. autofunction:: dshield.asnum
 .. autofunction:: dshield.dailysummary
 .. autofunction:: dshield.daily404summary
+.. autofunction:: dshield.daily404detail
 
 
 Exceptions

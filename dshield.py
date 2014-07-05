@@ -256,3 +256,18 @@ def daily404summary(date, return_format=None):
         except AttributeError:
             uri = '/'.join([uri, date])
     return _get(uri, return_format)
+
+def daily404detail(date, limit=None, return_format=None):
+    """Returns detail information of submitted 404 Error Page Information.
+
+    :param date: string or datetime.date() (required)
+    """
+    uri = 'daily404detail'
+    if date:
+        try:
+            uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
+        except AttributeError:
+            uri = '/'.join([uri, date])
+        if limit:
+            uri = '/'.join([uri, str(limit)])
+    return _get(uri, return_format)
