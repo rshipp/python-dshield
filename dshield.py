@@ -274,7 +274,7 @@ def daily404detail(date, limit=None, return_format=None):
     return _get(uri, return_format)
 
 def glossary(term=None, return_format=None):
-    """List of glossary terms and definitions
+    """List of glossary terms and definitions.
 
     :param term: a whole or parital word to "search" in the API
     """
