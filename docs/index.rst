@@ -49,6 +49,7 @@ from the official API documentation_.
 .. autofunction:: dshield.porthistory
 .. autofunction:: dshield.asnum
 .. autofunction:: dshield.dailysummary
+.. autofunction:: dshield.daily404summary
 
 
 Exceptions

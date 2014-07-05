@@ -290,3 +290,15 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(dshield.dailysummary('2012-05-01', '2012-05-03'), data)
         self.assertEquals(dshield.dailysummary('2012-05-01', datetime.date(2012, 5, 3)), data)
         self.assertEquals(dshield.dailysummary(return_format=dshield.JSON), '{"dailysummary":"test"}')
+
+    @responses.activate
+    def test_daily404summary(self):
+        responses.add(responses.GET,
+                      'https://dshield.org/api/daily404summary/2012-02-23?json',
+                      body='{"daily404summary":"test"}',
+                      match_querystring=True, content_type='text/json')
+        data = {'daily404summary': 'test'}
+        self.assertEquals(dshield.daily404summary('2012-02-23'), data)
+        self.assertEquals(dshield.daily404summary(datetime.date(2012, 2, 23)), data)
+        self.assertEquals(dshield.daily404summary('2012-02-23', return_format=dshield.JSON),
+                          '{"daily404summary":"test"}')
