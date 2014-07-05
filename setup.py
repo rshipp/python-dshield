@@ -15,7 +15,7 @@ setup(
         'requests'
     ],
     license='BSD',
-    description='A Python interface to the ISC/DShield API.',
+    description='A Pythonic interface to the Internet Storm Center / DShield API.',
     long_description=README,
     url='https://github.com/rshipp/python-dshield/',
     author='Ryan Shipp',
