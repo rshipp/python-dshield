@@ -19,11 +19,11 @@ Usage
 For the full documentation, see the ReadTheDocs_ site. If you just
 want a quick start::
 
-    import dshield
-    dshield.infocon()
-    # {'status': 'green'}
-    dshield.infocon(dshield.XML)
-    # '<?xml version="1.0" encoding="UTF-8"?>\n<infocon>\n<status>green</status>\n</infocon>'
+    >>> import dshield
+    >>> dshield.infocon()
+    {'status': 'green'}
+    >>> dshield.infocon(dshield.XML)
+    '<?xml version="1.0" encoding="UTF-8"?>\n<infocon>\n<status>green</status>\n</infocon>'
 
 .. _API: https://dshield.org/api/
 .. _ReadTheDocs: http://dshield.readthedocs.org/en/latest/
