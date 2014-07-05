@@ -13,6 +13,11 @@ DShield
 
 A Pythonic interface to the Internet Storm Center / DShield API_.
 
+Installation
+------------
+
+``pip install dshield``
+
 Usage
 -----
 
