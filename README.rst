@@ -10,6 +10,9 @@ DShield
 .. image:: https://landscape.io/github/rshipp/python-dshield/master/landscape.png
    :target: https://landscape.io/github/rshipp/python-dshield/master
    :alt: Code Health
+.. image:: http://img.shields.io/pypi/v/dshield.svg
+   :target: https://pypi.python.org/pypi/dshield
+   :alt: PyPi Version
 
 A Pythonic interface to the Internet Storm Center / DShield API_.
 
