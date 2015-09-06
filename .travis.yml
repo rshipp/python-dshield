@@ -13,6 +13,6 @@ install:
 script: 
   nosetests --with-coverage --cover-package=dshield
 after_success:
-  coveralls
-  coverage xml
-  CODACY_PROJECT_TOKEN=5935ab46b74f4d72b6c58b88d823d066 python-codacy-coverage
+  - coveralls
+  - coverage xml
+  - CODACY_PROJECT_TOKEN=5935ab46b74f4d72b6c58b88d823d066 python-codacy-coverage
