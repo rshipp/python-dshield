@@ -8,8 +8,11 @@ python:
 install: 
   - "pip install -r requirements-testing.txt --use-mirrors"
   - "pip install coveralls"
+  - "pip install git+https://github.com/codacy/python-codacy-coverage.git"
   - "python setup.py install"
 script: 
   nosetests --with-coverage --cover-package=dshield
 after_success:
   coveralls
+  coverage xml
+  CODACY_PROJECT_TOKEN=5935ab46b74f4d72b6c58b88d823d066 python-codacy-coverage

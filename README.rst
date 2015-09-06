@@ -7,8 +7,8 @@ DShield
 .. image:: https://coveralls.io/repos/rshipp/python-dshield/badge.png?branch=master
    :target: https://coveralls.io/r/rshipp/python-dshield?branch=master 
    :alt: Test Coverage
-.. image:: https://landscape.io/github/rshipp/python-dshield/master/landscape.png
-   :target: https://landscape.io/github/rshipp/python-dshield/master
+.. image:: https://api.codacy.com/project/badge/3906ec0470df46b8923fc3177e7daa78
+   :target: https://www.codacy.com/app/rshipp/python-dshield
    :alt: Code Health
 .. image:: http://img.shields.io/pypi/v/dshield.svg
    :target: https://pypi.python.org/pypi/dshield
