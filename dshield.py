@@ -14,17 +14,6 @@ class Error(Exception):
     """Custom exception class."""
 
 
-def _strip_and_reformat(data):
-    """Strip out 'METAKEYINFO', and reformat a dict into a list if it has keys
-    like "0", "1", etc. Does not modify the `data` parameter.
-    """
-    data_copy = data.copy()
-    try:
-        data_copy.__delitem__('METAKEYINFO')
-        return [data_copy[k] for k in sorted(data_copy, key=int)]
-    except (KeyError, ValueError):
-        return data_copy
-
 def _get(function, return_format=None):
     """Get and return data from the API.
 
@@ -32,7 +21,7 @@ def _get(function, return_format=None):
     """
     if return_format:
         return requests.get(''.join([__BASE_URL, function, return_format])).text
-    return _strip_and_reformat(requests.get(''.join([__BASE_URL, function, JSON])).json())
+    return requests.get(''.join([__BASE_URL, function, JSON])).json()
 
 
 def backscatter(date=None, rows=None, return_format=None):

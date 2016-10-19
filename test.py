@@ -30,50 +30,27 @@ class TestInternals(unittest.TestCase):
         self.assertEquals(dshield._get('infocon', dshield.JSON), '{"status":"green"}')
 
     @responses.activate
-    def test_get_converts_ordered_dict_to_list(self):
+    def test_get_converts_json_to_list(self):
         responses.add(responses.GET, 'https://dshield.org/api/backscatter?json',
                       status=200, match_querystring=True, content_type='text/json',
                       body="""
-                      {"0":{"sourceport":"6000","count":"563542","sources":"518","targets":"94654"},
-                       "1":{"sourceport":"80","count":"201888","sources":"3294","targets":"8130"},
-                       "2":{"sourceport":"53","count":"140780","sources":"3777","targets":"255"},
-                       "3":{"sourceport":"4935","count":"101361","sources":"13726","targets":"56572"},
-                       "4":{"sourceport":"12200","count":"79924","sources":"40","targets":"8040"},
-                       "5":{"sourceport":"8080","count":"78873","sources":"73","targets":"78543"},
-                       "6":{"sourceport":"68","count":"75543","sources":"104","targets":"8"},
-                       "7":{"sourceport":"137","count":"59672","sources":"902","targets":"1918"},
-                       "8":{"sourceport":"5066","count":"57052","sources":"35","targets":"57002"},
-                       "9":{"sourceport":"5070","count":"54773","sources":"23","targets":"54745"},
-                       "METAKEYINFO":"sourceport"}
+                      [{"sourceport":"6000","count":"563542","sources":"518","targets":"94654"},
+                       {"sourceport":"80","count":"201888","sources":"3294","targets":"8130"},
+                       {"sourceport":"53","count":"140780","sources":"3777","targets":"255"},
+                       {"sourceport":"4935","count":"101361","sources":"13726","targets":"56572"},
+                       {"sourceport":"12200","count":"79924","sources":"40","targets":"8040"},
+                       {"sourceport":"8080","count":"78873","sources":"73","targets":"78543"},
+                       {"sourceport":"68","count":"75543","sources":"104","targets":"8"},
+                       {"sourceport":"137","count":"59672","sources":"902","targets":"1918"},
+                       {"sourceport":"5066","count":"57052","sources":"35","targets":"57002"},
+                       {"sourceport":"5070","count":"54773","sources":"23","targets":"54745"}]
                       """)
         self.assertEquals(type(dshield._get('backscatter')), list)
         json = requests.get('https://dshield.org/api/backscatter?json').json()
         for index, item in enumerate(dshield._get('backscatter')):
-            self.assertEquals(json['{index}'.format(index=index)], item)
-        self.assertEquals(len(json), 11)
+            self.assertEquals(json[index], item)
+        self.assertEquals(len(json), 10)
         self.assertEquals(len(dshield._get('backscatter')), 10)
-        self.assertFalse('METAKEYINFO' in dshield._get('backscatter'))
-
-    def test_strip_and_reformat_converts_ordered_dict_to_list(self):
-        data = {
-            "0": {"sourceport":"6000","count":"563542","sources":"518","targets":"94654"},
-            "1": {"sourceport":"80","count":"201888","sources":"3294","targets":"8130"},
-            "2": {"sourceport":"53","count":"140780","sources":"3777","targets":"255"},
-            "3": {"sourceport":"4935","count":"101361","sources":"13726","targets":"56572"},
-            "4": {"sourceport":"12200","count":"79924","sources":"40","targets":"8040"},
-            "5": {"sourceport":"8080","count":"78873","sources":"73","targets":"78543"},
-            "6": {"sourceport":"68","count":"75543","sources":"104","targets":"8"},
-            "7": {"sourceport":"137","count":"59672","sources":"902","targets":"1918"},
-            "8": {"sourceport":"5066","count":"57052","sources":"35","targets":"57002"},
-            "9": {"sourceport":"5070","count":"54773","sources":"23","targets":"54745"},
-            "METAKEYINFO": "sourceport"
-        }
-        self.assertEquals(type(dshield._strip_and_reformat(data)), list)
-        for index, item in enumerate(dshield._strip_and_reformat(data)):
-            self.assertEquals(data['{index}'.format(index=index)], item)
-        self.assertEquals(len(data), 11)
-        self.assertEquals(len(dshield._strip_and_reformat(data)), 10)
-        self.assertFalse('METAKEYINFO' in dshield._strip_and_reformat(data))
 
 
 class TestPublicMethods(unittest.TestCase):
@@ -81,15 +58,15 @@ class TestPublicMethods(unittest.TestCase):
     @responses.activate
     def test_backscatter(self):
         responses.add(responses.GET, 'https://dshield.org/api/backscatter?json',
-                      body='{"METAKEYINFO": "", "0": "test"}', status=200,
+                      body='["test"]', status=200,
                       match_querystring=True, content_type='text/json')
         responses.add(responses.GET,
                       'https://dshield.org/api/backscatter/2011-12-01?json',
-                      body='{"METAKEYINFO": "", "0": "2011-12-01"}', status=200, match_querystring=True,
+                      body='["2011-12-01"]', status=200, match_querystring=True,
                       content_type='text/json')
         responses.add(responses.GET,
                       'https://dshield.org/api/backscatter/2011-12-01/10?json',
-                      body='{"METAKEYINFO": "", "0": "10"}', status=200, match_querystring=True,
+                      body='["10"]', status=200, match_querystring=True,
                       content_type='text/json')
         self.assertEquals(dshield.backscatter(), ["test"])
         self.assertEquals(dshield.backscatter("2011-12-01"), ["2011-12-01"])
@@ -97,7 +74,7 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(dshield.backscatter("2011-12-01", 10), ["10"])
         self.assertEquals(dshield.backscatter("2011-12-01", "10"), ["10"])
         self.assertEquals(dshield.backscatter("2011-12-01", "10", dshield.JSON),
-                          '{"METAKEYINFO": "", "0": "10"}')
+                          '["10"]')
 
     @responses.activate
     def test_handler(self):
