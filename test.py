@@ -337,3 +337,31 @@ class TestPublicMethods(unittest.TestCase):
         self.assertEquals(dshield.webhoneypotbytype(datetime.date(2012, 12, 10)), data)
         self.assertEquals(dshield.webhoneypotbytype('2012-12-10', return_format=dshield.JSON),
                           '{"webhoneypotbytype":"test"}')
+
+class TestRealAPI(unittest.TestCase):
+
+    def test_no_functions_throw_exceptions(self):
+        try:
+            dshield.backscatter()
+            dshield.handler()
+            dshield.infocon()
+            dshield.ip('8.8.8.8')
+            dshield.port(80)
+            dshield.portdate(80)
+            dshield.topports()
+            dshield.topips()
+            dshield.sources()
+            dshield.porthistory(80)
+            dshield.asnum(1)
+            dshield.dailysummary()
+            dshield.daily404summary(datetime.date(2011, 12, 1))
+            dshield.daily404detail(datetime.date(2011, 12, 1))
+            dshield.glossary()
+            dshield.webhoneypotsummary(datetime.date(2011, 12, 1))
+            dshield.webhoneypotbytype(datetime.date(2011, 12, 1))
+        except requests.RequestException:
+            # don't care about network errors
+            pass
+        except Exception:
+            # anything else is a fail
+            self.assertTrue(False)
