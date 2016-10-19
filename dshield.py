@@ -2,6 +2,8 @@
 
 import requests
 
+__version__ = "0.2"
+
 XML = "?xml"
 JSON = "?json"
 TEXT = "?text"
