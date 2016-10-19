@@ -3,7 +3,7 @@
 import datetime
 import requests
 
-__version__ = "0.2"
+__version__ = "0.2.1"
 
 XML = "?xml"
 JSON = "?json"
