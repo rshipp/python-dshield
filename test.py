@@ -189,6 +189,9 @@ class TestPublicMethods(unittest.TestCase):
         responses.add(responses.GET, 'https://dshield.org/api/sources/ip/10?json',
                       body='{"sources":"test"}',
                       match_querystring=True, content_type='text/json')
+        responses.add(responses.GET, 'https://dshield.org/api/sources/attacks/10?json',
+                      body='{"sources":"test"}',
+                      match_querystring=True, content_type='text/json')
         responses.add(responses.GET, 'https://dshield.org/api/sources/ip?json',
                       body='{"sources":"test"}',
                       match_querystring=True, content_type='text/json')
@@ -216,10 +219,12 @@ class TestPublicMethods(unittest.TestCase):
         responses.add(responses.GET, 'https://dshield.org/api/porthistory/80?json',
                       body='{"porthistory":"test"}',
                       match_querystring=True, content_type='text/json')
-        responses.add(responses.GET, 'https://dshield.org/api/porthistory?json',
+        responses.add(responses.GET,
+                      'https://dshield.org/api/porthistory/80/{date}?json'.format(date=(datetime.datetime.now() - datetime.timedelta(days=30)).strftime("%Y-%m-%d")),
                       body='{"porthistory":"test"}',
                       match_querystring=True, content_type='text/json')
-        responses.add(responses.GET, 'https://dshield.org/api/porthistory/badport?json',
+        responses.add(responses.GET,
+                      'https://dshield.org/api/porthistory/badport/{date}?json'.format(date=(datetime.datetime.now() - datetime.timedelta(days=30)).strftime("%Y-%m-%d")),
                       body='{"porthistory":{"error":"bad port number"}}',
                       match_querystring=True, content_type='text/json')
         data = {'porthistory': 'test'}
@@ -257,7 +262,8 @@ class TestPublicMethods(unittest.TestCase):
                       'https://dshield.org/api/dailysummary/2012-05-01?json',
                       body='{"dailysummary":"test"}',
                       match_querystring=True, content_type='text/json')
-        responses.add(responses.GET, 'https://dshield.org/api/dailysummary?json',
+        responses.add(responses.GET,
+                      'https://dshield.org/api/dailysummary/{date}?json'.format(date=datetime.datetime.now().strftime("%Y-%m-%d")),
                       body='{"dailysummary":"test"}',
                       match_querystring=True, content_type='text/json')
         data = {'dailysummary': 'test'}
@@ -365,3 +371,6 @@ class TestRealAPI(unittest.TestCase):
         except Exception:
             # anything else is a fail
             self.assertTrue(False)
+
+    def test_limits_respected(self):
+        self.assertEquals(len(dshield.topips(limit=100)), 100)

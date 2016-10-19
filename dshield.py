@@ -1,5 +1,6 @@
 """A Pythonic interface to the Internet Storm Center / DShield API."""
 
+import datetime
 import requests
 
 __version__ = "0.2"
@@ -109,45 +110,37 @@ def portdate(port_number, date=None, return_format=None):
     else:
         return response
 
-def topports(sort_by=None, limit=None, date=None, return_format=None):
+def topports(sort_by='records', limit=10, date=None, return_format=None):
     """Information about top ports for a particular date with return limit.
 
     :param sort_by: one of 'records', 'targets', 'sources'
     :param limit: number of records to be returned
     :param date: an optional string in 'Y-M-D' format or datetime.date() object
     """
-    uri = 'topports'
-    if sort_by:
-        uri = '/'.join([uri, sort_by])
-        if limit:
-            uri = '/'.join([uri, str(limit)])
-            if date:
-                try:
-                    uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
-                except AttributeError:
-                    uri = '/'.join([uri, date])
+    uri = '/'.join(['topports', sort_by, str(limit)])
+    if date:
+        try:
+            uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
+        except AttributeError:
+            uri = '/'.join([uri, date])
     return _get(uri, return_format)
 
-def topips(sort_by=None, limit=None, date=None, return_format=None):
+def topips(sort_by='records', limit=10, date=None, return_format=None):
     """Information about top ports for a particular date with return limit.
 
     :param sort_by: one of 'records', 'attacks'
     :param limit: number of records to be returned
     :param date: an optional string in 'Y-M-D' format or datetime.date() object
     """
-    uri = 'topips'
-    if sort_by:
-        uri = '/'.join([uri, sort_by])
-        if limit:
-            uri = '/'.join([uri, str(limit)])
-            if date:
-                try:
-                    uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
-                except AttributeError:
-                    uri = '/'.join([uri, date])
+    uri = '/'.join(['topips', sort_by, str(limit)])
+    if date:
+        try:
+            uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
+        except AttributeError:
+            uri = '/'.join([uri, date])
     return _get(uri, return_format)
 
-def sources(sort_by=None, limit=None, date=None, return_format=None):
+def sources(sort_by='attacks', limit=10, date=None, return_format=None):
     """Information summary from the last 30 days about source IPs with return
     limit.
 
@@ -155,16 +148,12 @@ def sources(sort_by=None, limit=None, date=None, return_format=None):
     :param limit: number of records to be returned (max 10000)
     :param date: an optional string in 'Y-M-D' format or datetime.date() object
     """
-    uri = 'sources'
-    if sort_by:
-        uri = '/'.join([uri, sort_by])
-        if limit:
-            uri = '/'.join([uri, str(limit)])
-            if date:
-                try:
-                    uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
-                except AttributeError:
-                    uri = '/'.join([uri, date])
+    uri = '/'.join(['sources', sort_by, str(limit)])
+    if date:
+        try:
+            uri = '/'.join([uri, date.strftime("%Y-%m-%d")])
+        except AttributeError:
+            uri = '/'.join([uri, date])
     return _get(uri, return_format)
 
 def porthistory(port_number, start_date=None, end_date=None, return_format=None):
@@ -181,16 +170,20 @@ def porthistory(port_number, start_date=None, end_date=None, return_format=None)
     :param end_date: string or datetime.date(), default is today
     """
     uri = 'porthistory/{port}'.format(port=port_number)
-    if start_date:
+
+    if not start_date:
+        # default 30 days ago
+        start_date = datetime.datetime.now() - datetime.timedelta(days=30)
+
+    try:
+        uri = '/'.join([uri, start_date.strftime("%Y-%m-%d")])
+    except AttributeError:
+        uri = '/'.join([uri, start_date])
+    if end_date:
         try:
-            uri = '/'.join([uri, start_date.strftime("%Y-%m-%d")])
+            uri = '/'.join([uri, end_date.strftime("%Y-%m-%d")])
         except AttributeError:
-            uri = '/'.join([uri, start_date])
-        if end_date:
-            try:
-                uri = '/'.join([uri, end_date.strftime("%Y-%m-%d")])
-            except AttributeError:
-                uri = '/'.join([uri, end_date])
+            uri = '/'.join([uri, end_date])
     response = _get(uri, return_format)
     if 'bad port number' in str(response):
         raise Error('Bad port, {port}'.format(port=port_number))
@@ -222,16 +215,20 @@ def dailysummary(start_date=None, end_date=None, return_format=None):
     :param end_date: string or datetime.date(), default is today
     """
     uri = 'dailysummary'
-    if start_date:
+
+    if not start_date:
+        # default today
+        start_date = datetime.datetime.now()
+
+    try:
+        uri = '/'.join([uri, start_date.strftime("%Y-%m-%d")])
+    except AttributeError:
+        uri = '/'.join([uri, start_date])
+    if end_date:
         try:
-            uri = '/'.join([uri, start_date.strftime("%Y-%m-%d")])
+            uri = '/'.join([uri, end_date.strftime("%Y-%m-%d")])
         except AttributeError:
-            uri = '/'.join([uri, start_date])
-        if end_date:
-            try:
-                uri = '/'.join([uri, end_date.strftime("%Y-%m-%d")])
-            except AttributeError:
-                uri = '/'.join([uri, end_date])
+            uri = '/'.join([uri, end_date])
     return _get(uri, return_format)
 
 def daily404summary(date, return_format=None):
